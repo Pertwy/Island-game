@@ -1,7 +1,7 @@
 class player:
 
-    def __init__(self):
-        pass
+    def __init__(self, letter):
+        self.letter = letter
 
     def view_items(self):
         pass
@@ -11,3 +11,4 @@ class player:
 
     def use_item(self, item):
         pass
+
