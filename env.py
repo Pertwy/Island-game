@@ -12,15 +12,51 @@ number_dic = {
     10: "ten",
 }
 
+action_dic = """look: Look around
+move: Move north (N), south (S), East (E), or West (W)
+inventory: View your inventory
+items: View the items on the floor
+dig: Dig 
+pick: Pick up an object and put it in your inventory
+place: Place an object from your inventory on the floor
+use: Use an item
+combine: Combine two items
+inspect: Inspect an item on the floor or in your inventory"""
 
+
+# Starting location
 location = [0, 0]
+inventory = ["inventory"]
+answer = ""
 
 
 def find_location():
     return ("{0}_{1}".format(number_dic[location[0]], number_dic[location[1]]))
 
+def find_location_num(x,y):
+    return ("{0}_{1}".format(number_dic[x], number_dic[y]))
+
+def find_location_N():
+    return ("{0}_{1}".format(number_dic[location[0]], number_dic[location[1] - 1]))
+
+
+def find_location_S():
+    return ("{0}_{1}".format(number_dic[location[0]], number_dic[location[1] + 1]))
+
+
+def find_location_E():
+    return ("{0}_{1}".format(number_dic[location[0] - 1], number_dic[location[1]]))
+
+
+def find_location_W():
+    return ("{0}_{1}".format(number_dic[location[0] + 1], number_dic[location[1]]))
+
 
 class Env:
+
+    def __init__(self):
+        self.first_time = True  # first time you enter an area
+        self.items = []
 
     # The long description will be shown the first time a player enters a square. And if a player uses the look comand
     def add_long_desc(self, long_desc):
@@ -30,29 +66,43 @@ class Env:
     def add_short_desc(self, short_desc):
         self.short_desc = short_desc
 
-    def is_impass(self, impass):
+    def add_environment(self, environment):
+        self.environment = environment
+
+    def add_is_impass(self, impass):
         self.impass = impass
 
-    def __init__(self):
-        self.first_time = True  # first time you enter an area
+    def add_items(self, items):
+        self.items.append(items)
 
     def actions_list(self):  # what actions are available?
-        print("Print List of actions")
+        print(action_dic)
 
     def look(self):
-        print(self.add_long_desc)
+        print(self.long_desc)
 
-    def inventory(self):
-        pass
+    def view_inventory(self):
+        print(inventory)
+
+    def item_list(self):
+        print("All items on the floor:" + self.items)
 
     def dig(self):
         pass
 
     def pick_up(self, item):
-        pass
+        if item in self.items:
+            inventory.append(item)
+            self.items.remove(item)
+        else:
+            print("that item is not there")
 
     def place(self, item):
-        pass
+        if item in inventory:
+            inventory.remove(item)
+            self.items.append(item)
+        else:
+            print("You do not have that item")
 
     def use(self, item):
         pass
@@ -64,66 +114,62 @@ class Env:
         if direction == "N" or direction == "n":
             if location[1] == 0:
                 print("can't go that was mate")
-            elif self.impass == True:
-                print("impass mate, bit stuck ent ya")
+            elif eval(find_location_N()).environment == "rocks":
+                print("The rocks are too treterous, you can not pass")
+            elif eval(find_location_N()).environment == "denseForest" and "machette" not in inventory:
+                print(
+                    "The forest is too dense to walk through but looks like it could be cut down")
+            elif eval(find_location_N()).environment == "denseForest" and "machette" in inventory:
+                answer = input("cut down dense forest with machette? Y/N")
+                if answer == "Y":
+                    location[1] = location[1] - 1
+                    eval(find_location()).environment = "forest"
+                    print("You cut down that forest and move forward")
+                elif answer == "N":
+                    print("You can cut down that forest, but maybe later")
             else:
                 location[1] = location[1] - 1
-                self.look()
 
         elif direction == "S" or direction == "s":
             if location[1] == 10:
                 print("can't go that was mate")
-            elif self.impass == True:
-                print("impass mate, bit stuck ent ya")
+            # elif self.impass == True:
+                #print("impass mate, bit stuck ent ya")
             else:
                 location[1] = location[1] + 1
-                self.look()
 
         elif direction == "E" or direction == "e":
             if location[0] == 10:
                 print("can't go that was mate")
-            elif self.impass == True:
-                print("impass mate, bit stuck ent ya")
+            # elif self.impass == True:
+                #print("impass mate, bit stuck ent ya")
             else:
-                location[1] = location[1] + 1
-                self.look()
+                location[0] = location[0] + 1
 
         elif direction == "W" or direction == "w":
             if location[0] == 0:
                 print("can't go that was mate")
-            elif self.impass == True:
-                print("impass mate, bit stuck ent ya")
+            # elif self.impass == True:
+                #print("impass mate, bit stuck ent ya")
             else:
-                location[1] = location[1] - 1
-                self.look()
+                location[0] = location[0] - 1
 
         else:
             pass  # check again
-
-
-class Sea(Env):
-    pass
-
-
-class Jung(Env):
-    pass
-
-
-class Sand(Env):
-    pass
+        print(location)
 
 
 zero_zero = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
-zero_one = Env()
+one_zero = Env()
+two_zero = Env()
+three_zero = Env()
+four_zero = Env()
+five_zero = Env()
+six_zero = Env()
+seven_zero = Env()
+eight_zero = Env()
+nine_zero = Env()
+ten_zero = Env()
 
 zero_one = Env()
 one_one = Env()
@@ -244,62 +290,3 @@ seven_ten = Env()
 eight_ten = Env()
 nine_ten = Env()
 ten_ten = Env()
-
-one_one.is_impass(True)
-
-# print(tiles)
-# create all of the env squares
-
-# location is set to start
-# what do you want to do?
-#
-win = False
-
-while win == False:
-    user_input = input("what do you want to do")
-    length = len(user_input.split())
-    eval(find_location()).add_long_desc("Hello")
-    eval(find_location()).look()
-
-    if length == 1:
-        if user_input == "actions" or "Actions":
-            one_one.actions_list()
-        elif user_input == "look" or "Look":
-            one_one.look()
-        elif user_input == "inventory" or user_input == "Inventory":
-            one_one.inventory()
-        elif user_input == "dig" or user_input == "Dig":
-            one_one.dig()
-
-    if length == 2:
-        user_input_split = user_input.split(" ")
-        user_input_action = user_input_split[0]
-        user_input_arg = user_input_split[1]
-
-        if user_input_action == "Move" or user_input_action == "move":
-            one_one.move(user_input_arg)
-        elif user_input_action == "Pick" or user_input_action == "pick":
-            one_one.pick_up(user_input_arg)
-        elif user_input_action == "Place" or user_input_action == "place":
-            one_one.place(user_input_arg)
-        elif user_input_action == "Use" or user_input_action == "use":
-            one_one.use(user_input_arg)
-
-    if length == 3:
-        user_input_split = user_input.split(" ")
-        user_input_action = user_input_split[0]
-        user_input_arg1 = user_input_split[1]
-        user_input_arg2 = user_input_split[2]
-
-        if user_input_action == "Combine" or user_input_action == "combine":
-            one_one.combine(user_input_arg1, user_input_arg2)
-
-
-'''
-tiles = {}
-for x in range(1, 10):
-    for y in range(1, 10):
-        #("{0}_{1}").format(number_dic[x], number_dic[y]) = Env()
-        #tiles["{0}_{1}".format(number_dic[x], number_dic[y])] = Env()
-        number_dic[x] + "_" + number_dic[y] = Env()')
-'''
