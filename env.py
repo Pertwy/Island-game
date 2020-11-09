@@ -33,8 +33,10 @@ answer = ""
 def find_location():
     return ("{0}_{1}".format(number_dic[location[0]], number_dic[location[1]]))
 
-def find_location_num(x,y):
+
+def find_location_num(x, y):
     return ("{0}_{1}".format(number_dic[x], number_dic[y]))
+
 
 def find_location_N():
     return ("{0}_{1}".format(number_dic[location[0]], number_dic[location[1] - 1]))
