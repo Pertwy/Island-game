@@ -1,6 +1,7 @@
 clone -> Bring repositorythat is hosted somewhere like Github into a folder on your local machine
 
 add -> Track your files and changes in Git
+git add . -> adds everything 
 
 commit -> Save your files in Git
 
